@@ -2,7 +2,8 @@
 import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { fetchPlaces } from './lib/fetchPlaces'
-import { marked } from 'marked'
+import ReactMarkdown from 'react-markdown'
+import { linkifyDynamicActivities } from './lib/linkifyDynamicActivities'
 
 export default function Home() {
   const [destination, setDestination] = useState('')
@@ -10,6 +11,8 @@ export default function Home() {
   const { mutate, data, isPending } = useMutation({
     mutationFn: fetchPlaces,
   })
+
+  const finalOutput = linkifyDynamicActivities(data, destination)
 
   const handleSubmit = () => {
     if (destination.trim()) {
@@ -24,6 +27,11 @@ export default function Home() {
         onChange={(e) => setDestination(e.target.value)}
         placeholder="Enter a city (e.g. Tokyo)"
         className="p-3 rounded border w-full max-w-md mb-4 text-lg"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleSubmit()
+          }
+        }}
       />
       <button
         onClick={handleSubmit}
@@ -34,10 +42,22 @@ export default function Home() {
       </button>
 
       {data && (
-        <div
-          className="result-content whitespace-pre-wrap text-left mt-6 max-w-xl bg-white bg-opacity-60 p-4 rounded-xl shadow"
-          dangerouslySetInnerHTML={data ? { __html: marked(data) } : undefined}
-        />
+        <div className="result-content whitespace-pre-wrap text-left mt-6 max-w-xl bg-white bg-opacity-60 p-4 rounded-xl shadow">
+          <ReactMarkdown
+            components={{
+              a: ({ node, ...props }) => (
+                <a
+                  {...props}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline hover:text-blue-800"
+                />
+              ),
+            }}
+          >
+            {finalOutput}
+          </ReactMarkdown>
+        </div>
       )}
     </div>
   )
