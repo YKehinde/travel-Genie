@@ -24,3 +24,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* e.g., in globals.css */
+.result-content a {
+  color: #7c3aed; /* purple-600 */
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.result-content a:hover {
+  color: #a21caf; /* purple-800 */
+}
