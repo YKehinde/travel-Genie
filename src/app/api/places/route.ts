@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     const result = openaiRes.data.choices[0].message.content
 
     return NextResponse.json({ result })
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       console.error('OpenRouter Axios Error:', {
         status: error.response?.status,

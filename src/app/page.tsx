@@ -45,7 +45,7 @@ export default function Home() {
         <div className="result-content whitespace-pre-wrap text-left mt-6 max-w-xl bg-white bg-opacity-60 p-4 rounded-xl shadow">
           <ReactMarkdown
             components={{
-              a: ({ node, ...props }) => (
+              a: ({ ...props }) => (
                 <a
                   {...props}
                   target="_blank"
