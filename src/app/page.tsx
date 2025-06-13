@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { fetchPlaces } from './lib/fetchPlaces'
 import ReactMarkdown from 'react-markdown'
-import { linkifyDynamicActivities } from './lib/linkifyDynamicActivities'
+import { transformAiMarkdown } from './lib/transformAiMarkdown'
 
 export default function Home() {
   const [destination, setDestination] = useState('')
@@ -12,7 +12,7 @@ export default function Home() {
     mutationFn: fetchPlaces,
   })
 
-  const finalOutput = linkifyDynamicActivities(data, destination)
+  const finalOutput = transformAiMarkdown(data, destination)
 
   const handleSubmit = () => {
     if (destination.trim()) {
